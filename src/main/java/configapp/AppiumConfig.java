@@ -1,4 +1,4 @@
-package Config;
+package configapp;
 
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.MobileElement;
@@ -14,17 +14,23 @@ public class AppiumConfig {
     public static AppiumDriver<MobileElement> driver; // static fo priority
     // "appPackage": "com.telran.ilcarro",
 
+    public static AppiumDriver getDriver() {
+        if(driver == null) {
+            driver = setUp();
+        }
+        return driver;
+    }
+
     @BeforeSuite
-    public void setUp() {
+    private static AppiumDriver setUp() {
         DesiredCapabilities capabilities = new DesiredCapabilities();
-        capabilities.setCapability("platformName", "Android");
-        capabilities.setCapability(MobileCapabilityType.DEVICE_NAME, "Nex6");
-        capabilities.setCapability(MobileCapabilityType.PLATFORM_VERSION,"8.0");
+        capabilities.setCapability("platformName","Android");
+        capabilities.setCapability("deviceName", "Nex6");
+        capabilities.setCapability(MobileCapabilityType.PLATFORM_VERSION, "8.0");
         capabilities.setCapability("appPackage", "com.telran.ilcarro");
         capabilities.setCapability("appActivity", ".SplashActivity");
+        capabilities.setCapability("automationName","Appium");
 
-
-        capabilities.setCapability(MobileCapabilityType.AUTOMATION_NAME, "Appium");
         capabilities.setCapability(MobileCapabilityType.APP, "C:\\Tools\\apk\\ilcarro-android.apk");
         /*
         For Mac
@@ -36,7 +42,7 @@ public class AppiumConfig {
         } catch (MalformedURLException e) {
             throw new RuntimeException(e);
         }
-
+        return driver;
     }
 
     @AfterSuite
